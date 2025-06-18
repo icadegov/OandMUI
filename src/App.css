@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+body {
+  font-family: 'Montserrat', sans-serif !important;
+}
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.Card-header {
+  background-image: linear-gradient(to right, purple, #191970);
+  font-size: medium;
+  text-decoration : white;
+  color: white;
+
+  /* style={{backgroundImage:'linear-gradient(to right,purple,#191970 )',fontSize:'medium', color: 'white' }} text="white" /> */
+}
+
+
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.table thead {
+  background-color: unset;
+  color: unset;
+}
+
+
+.table.custom-table thead th {
+  background-color: #d3d3d3  !important;
+  color: black !important;
+  /* padding-top: 12px;
+  padding-bottom: 12px; */
+  opacity: 0.9; 
+  font-weight: bold;
+  border:1px solid black;
+}
+
+
+.table.custom-table tfoot td {
+  align-self: left;
+  background-color: #d3d3d3  !important;
+  color: black !important;
+  opacity: 0.9;
+  font-weight: bold;
+  border:1px solid black;
+}
+
+.nav-link-custom{
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  color: purple;
+}
+
+.custom-table-sm td,
+.custom-table-sm th {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+  vertical-align: middle;
+}
+
+
+/* rti style */
+
+
+
+.table.rti-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #8bbef8;
+  color: black;
+  padding: 4px;
+  opacity: 0.95;
+  font-weight: bold;
+  border: 1px solid #dee2e6;
+  z-index: 10; 
+}
+
+.required-asterisk {
+  color: red;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+.scroll-container {
+  width: 100%;
+  max-height: 600px;
+  overflow: auto;
+}
+
+@media print {
+  .scroll-container {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+  .sticky-header {
+    position: static;
+  }
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 20;
+  height: 50px;
+}
+
+/* thead tr.first-header th {
+  top: 0;
+  z-index: 20;
+}
+thead tr.second-header th {
+  top: 80px;
+  z-index: 19;
+}
+thead tr.third-header th {
+  top: 100px;
+  z-index: 18;
+} */
+
+
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: white;
+  width: 90%;
+  max-height: 90vh;      /* limit height to viewport */
+  overflow-y: auto;       /* enable vertical scrolling */
+  padding: 1.5rem;
+  border-radius: 10px;
+  position: relative;
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.5rem;
+  background: transparent;
+  border: none;
+  color: red;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.modal-close-button:hover {
+  color: red;
+}
+

@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+
+
+
+.dashboard-container {
+  padding: 20px;
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+.summary-cards {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.dashboard-container .card {
+  background: #e0e0e0;
+  padding: 15px;
+  border-radius: 10px;
+  min-width: 150px;
+  text-align: center;
+
+}
+
+.quarter-status {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.quarter-card {
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+  min-width: 100px;
+}
+
+.closed {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.open {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.q1-status {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ffeeba;
+  font-weight: bold;
+}
+
+.center-card {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* optional spacing */
+}
+
+.quarter-status .quarter-card {
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+}
+
+.quarter-card.closed {
+  background-color: #dc3545; /* Bootstrap danger */
+}
+
+.quarter-card.open {
+  background-color: #28a745; /* Bootstrap success */
+}
+
+.summary-cards .card {
+  min-width: 150px;
+  text-align: center;
+  font-weight: bold;
+}

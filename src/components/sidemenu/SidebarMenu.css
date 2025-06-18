@@ -1,0 +1,133 @@
+.sidebar-item {
+  cursor: pointer;
+  background-color: white;
+  color: black!important;
+  padding: 5px 15px ! important;
+  transition: all 0.3s ease-in-out;
+  font-weight:400!important;
+  font-size: 14px;
+}
+
+
+/* .sidebar-item:hover {
+  background-color: #e0e0ff;
+  color: #4154f1;
+} */
+
+.sidebar-item.highlighted {
+  color: white !important;/* Light purple */
+  background-image: linear-gradient(to right,purple,#191970 );
+}
+
+.offcanvas-backdrop.show {
+  opacity: 0 ! important; /* Change this value to the desired opacity */
+}
+
+.submenu-item {
+  cursor: pointer;
+  color: black;
+  padding: 4px 15px !important;
+  transition: all 0.3s ease-in-out;
+}
+.submenu-item:hover {
+  background-color: #191970;
+  /* Light purple */
+  color: #0d6efd;
+}
+.dropdown-item-custom:hover {
+  background-color: #191970 !important;
+  color: white !important;
+}
+.navbar-light .navbar-brand,
+.navbar-light .nav-link {
+  color: black;
+}
+.navbar-light .nav-link:hover {
+  color: #191970;
+}
+.gradient-card-header {
+  /* background: linear-gradient(90deg, #85C5E6, #A566C7, #E766C0); */
+background: linear-gradient(90deg, #dedce5, #614ab2,#ffffff);
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.25rem; /* Increased font size */
+  padding: 12px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+.custom-tabs .nav {
+  flex-wrap: nowrap !important; /* Prevents tabs from moving to the next line */
+  overflow-x: auto; /* Adds horizontal scrolling if needed */
+  white-space: nowrap;
+}
+.custom-tabs .nav-item {
+  flex: 1; /* Ensures tabs distribute evenly */
+  text-align: center;
+}
+.list-group-item.active {
+  background-color: #007bff !important;
+  color: white !important;
+  font-weight: bold;
+}
+.first-level:hover {
+  background-color: #191970 !important;
+  color: white !important;
+}
+.second-level {
+  font-size: 14px;
+  }
+.second-level:hover {
+  background-color: #e6e8fa!important;
+  color: black !important;
+}
+
+.submenu-item {
+  cursor: pointer;
+}
+.custom-card {
+  border: 3px solid transparent;
+  border-radius: 15px;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(135deg, #ff9a9e, #fad0c4) border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  transition: transform 0.2s ease-in-out;
+}
+
+.custom-card:hover {
+  transform: scale(1.05);
+}
+
+.arrow-container {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 24px;
+  color: #ff5f6d;
+  cursor: pointer;
+}
+
+/* Hamburger and toggle button styles */
+.open-sidebar-btn {
+  position: fixed;
+  left:2.5px;
+  z-index: 1001; /* Ensure hamburger is on top */
+}
+
+.open-sidebar-btn button {
+  background-color: black;
+  color: white;
+  border: 1px solid #333; /* Add border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 0.1px 10px; /* Padding for better button size */
+  cursor: pointer;  
+  font-size: 30px;
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.open-sidebar-btn button:hover {
+ /* Change border color on hover */
+  transform: scale(1.1); /* Slightly scale the button on hover */
+}
+
+
