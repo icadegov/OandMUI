@@ -115,6 +115,7 @@ const getTankDataByunitIdURL = baseUrlMK + "jurisdictionBasedTanksForTankFilling
 
 const officeWiseTanksURL = baseUrlMK + "officeWiseTanks";
 const subofficeWiseTanksURL=baseUrlMK+"subofficeWiseTanks";
+const viewDownloadFileURL = baseUrl + "viewFile";
 // Create an axios instance
 
 const axiosInstance = axios.create({
@@ -349,6 +350,8 @@ const officeWiseTanks = (data) => axiosInstance.post(officeWiseTanksURL, data);
 
 const subofficeWiseTanks = (data) => axiosInstance.get(subofficeWiseTanksURL, data);
 
+const viewDownloadFile = (filepath) =>  axiosInstance.get(viewDownloadFileURL, {  params: { filepath }, responseType: 'blob' });
+
 // Export the methods
 const HttpService = {
     setAuthToken,
@@ -436,6 +439,7 @@ const HttpService = {
     getTankDataByunitId,
     officeWiseTanks,
     subofficeWiseTanks,
+    viewDownloadFile
 };
 
 export default HttpService;

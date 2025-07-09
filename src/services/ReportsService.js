@@ -157,6 +157,13 @@ fetchProjectAndUnitWise : (config,successCallback, errorCallback) => {
         .catch((error) => errorCallback(error));
         },
 
+
+viewDownloadFile: async(filepath,successCallback,errorCallback) => {
+        HttpService.viewDownloadFile(filepath)
+      .then((response) => successCallback(response))
+      .catch((error) => errorCallback(error));
+  },
+
 }
 
 export default ReportsService

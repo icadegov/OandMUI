@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Alert } from 'react-bootstrap';
+import { Card, Alert, Button } from 'react-bootstrap';
 import ReportsService from '../../services/ReportsService';
 import Table from 'react-bootstrap/Table';
 import ExporttoExcel from '../ExporttoExcel';
 import PrintableComponents from '../PrintableComponents';
+import { ViewFile } from '../Reports/ViewFile';
 
 const DetailedTSAgmtBillsReport = ({
   unitId,
@@ -33,6 +34,11 @@ const DetailedTSAgmtBillsReport = ({
   }, [approvedById]);
 
  // console.log("unitId"+unitId+" approvedById"+approvedById+" scstFunds"+scstFunds+" financialYear"+financialYear+" projectId"+projectId+ "hoaId"+hoaId+"workTypeId"+workTypeId+"ProjSubType"+ProjSubType +"type"+type);
+
+ const viewFile = (filePath) => {
+  // console.log(filePath);
+     ViewFile(filePath);
+   };
 
   useEffect(() => {
     if (
@@ -175,14 +181,12 @@ const DetailedTSAgmtBillsReport = ({
                         <td>{ts.tsApprovedAmount}</td>
                         <td>{ts.submittedBy || '-'}</td>
                         <td>
-                          <a href={`../${ts.tsFileUrl}`} target="_blank" rel="noopener noreferrer">
-                            View Proceeding
-                          </a>
+                          <Button variant="link" className='w-50 m-0' onClick={() => viewFile(ts.tsFileUrl)} > View File </Button>
+                          {/* <a href={`../${ts.tsFileUrl}`} target="_blank" rel="noopener noreferrer">  View Proceeding  </a> */}
                         </td>
                         <td>
-                          <a href={`../${ts.tsEstFileUrl}`} target="_blank" rel="noopener noreferrer">
-                            View Estimate
-                          </a>
+                          <Button variant="link" className='w-50 m-0' onClick={() => viewFile(ts.tsEstFileUrl)} >  View File   </Button>
+                          {/* <a href={`../${ts.tsEstFileUrl}`} target="_blank" rel="noopener noreferrer"> View Estimate </a> */}
                         </td>
                       </tr>
                     ))}

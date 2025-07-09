@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Alert } from 'react-bootstrap';
+import { Card, Alert, Button } from 'react-bootstrap';
 import ReportsService from '../../services/ReportsService';
 import Table from 'react-bootstrap/Table';
 import UserService from '../../services/UserService';
 import { useNavigate } from 'react-router-dom';
+import { ViewFile } from '../Reports/ViewFile';
 
 const DetailedAAReport  = ({
   unitId,
@@ -40,6 +41,11 @@ const DetailedAAReport  = ({
  
   // console.log("unitId"+unitId+" approvedById"+approvedById+" scstFunds"+scstFunds+" financialYear"+financialYear+" projectId"+projectId+ "hoaId"+hoaId+"workTypeId"+workTypeId+"ProjSubType"+ProjSubType +"type"+type);
  
+const viewFile = (filePath) => {
+ // console.log(filePath);
+    ViewFile(filePath);
+  };
+
    useEffect(() => {
      if (
        unitId != null &&
@@ -143,7 +149,7 @@ try {
   setTanksList(tanksList);
 
   const projectList = updatedResponse.filter(item => item.workTypeId === Number(1));
-  //console.log("Filtered Projects List:", projectList);  
+  console.log("Filtered Projects List:", projectList);  
   setProjectList(projectList);
 
   const liftList = updatedResponse.filter(item => item.workTypeId === 3);
@@ -219,19 +225,9 @@ try {
                         <td>{project.approvedByName}</td>
                         <td>{project.referenceNumber}</td>
                         <td>{project.adminSanctionAmt}</td>
-                       
-
-
-<td>{project.unitId !== 0 &&
-    (project.unitName + ', ' + 
-     ((project.circleId) !== 0 ? project.circleName + ', ' : '') + 
-     ((project.divisionId) !== 0 ? project.divisionName + ', ' : '' )+
-     ((project.subDivisionId)!==0 ? project.subDivisionName :''))}</td>
-
-                        <td>
-                          <a href={`../${project.adminSancUrl}`} target="_blank" rel="noopener noreferrer">
-                            View File
-                          </a>
+                       <td>{project.unitId !== 0 && (project.unitName + ', ' +  ((project.circleId) !== 0 ? project.circleName + ', ' : '') +  ((project.divisionId) !== 0 ? project.divisionName + ', ' : '' )+  ((project.subDivisionId)!==0 ? project.subDivisionName :''))}</td>
+                       <td><Button variant="link" className='w-50 m-0' onClick={() => viewFile(project.aaFileUrl)} >  View File   </Button>
+                        {/* <a href={`../${project.adminSancUrl}`} target="_blank" rel="noopener noreferrer"> View File </a> */}
                         </td>
                       </tr>
                     ))}
@@ -284,9 +280,8 @@ try {
      ((project.divisionId) !== 0 ? project.divisionName + ', ' : '' )+
      ((project.subDivisionId)!==0 ? project.subDivisionName :''))}</td>
                         <td>
-                          <a href={`../${project.adminSancUrl}`} target="_blank" rel="noopener noreferrer">
-                            View File
-                          </a>
+                          <Button variant="link" className='w-50 m-0' onClick={() => viewFile(project.aaFileUrl)} >  View File   </Button>
+                          {/* <a href={`../${project.adminSancUrl}`} target="_blank" rel="noopener noreferrer">  View File  </a> */}
                         </td>
                       </tr>
                     ))}
@@ -335,9 +330,8 @@ try {
      ((project.divisionId) !== 0 ? project.divisionName + ', ' : '' )+
      ((project.subDivisionId)!==0 ? project.subDivisionName :''))}</td>
                         <td>
-                          <a href={`../${project.adminSancUrl}`} target="_blank" rel="noopener noreferrer">
-                            View File
-                          </a>
+                          <Button variant="link" className='w-50 m-0' onClick={() => viewFile(project.aaFileUrl)} >  View File   </Button>
+                          {/* <a href={`../${project.adminSancUrl}`} target="_blank" rel="noopener noreferrer"> View File </a> */}
                         </td>
                       </tr>
                     ))}
@@ -387,9 +381,8 @@ try {
      ((project.divisionId) !== 0 ? project.divisionName + ', ' : '' )+
      ((project.subDivisionId)!==0 ? project.subDivisionName :''))}</td>
                         <td>
-                          <a href={`../${project.adminSancUrl}`} target="_blank" rel="noopener noreferrer">
-                            View File
-                          </a>
+                          <Button variant="link" className='w-50 m-0' onClick={() => viewFile(project.aaFileUrl)} >  View File   </Button>
+                          {/* <a href={`../${project.adminSancUrl}`} target="_blank" rel="noopener noreferrer">  View File </a> */}
                         </td>
                       </tr>
                     ))}
@@ -439,9 +432,8 @@ try {
      ((project.divisionId) !== 0 ? project.divisionName + ', ' : '' )+
      ((project.subDivisionId)!==0 ? project.subDivisionName :''))}</td>
                         <td>
-                          <a href={`../${project.adminSancUrl}`} target="_blank" rel="noopener noreferrer">
-                            View File
-                          </a>
+                          <Button variant="link" className='w-50 m-0' onClick={() => viewFile(project.aaFileUrl)} >  View File   </Button>
+                          {/* <a href={`../${project.adminSancUrl}`} target="_blank" rel="noopener noreferrer"> View File  </a> */}
                         </td>
                       </tr>
                     ))}
@@ -491,9 +483,8 @@ try {
      ((project.divisionId) !== 0 ? project.divisionName + ', ' : '' )+
      ((project.subDivisionId)!==0 ? project.subDivisionName :''))}</td>
                         <td>
-                          <a href={`../${project.adminSancUrl}`} target="_blank" rel="noopener noreferrer">
-                            View File
-                          </a>
+                          <Button variant="link" className='w-50 m-0' onClick={() => viewFile(project.aaFileUrl)} >  View File   </Button>
+                          {/* <a href={`../${project.adminSancUrl}`} target="_blank" rel="noopener noreferrer">  View File </a> */}
                         </td>
                       </tr>
                     ))}
