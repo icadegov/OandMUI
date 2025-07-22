@@ -23,7 +23,6 @@ const DetailedAAReport  = ({
   const [smallLiftList, setSmallLiftList] = useState([]);
   const [buildingList, setBuildingList] = useState([]);
   const [floodBankList, setFloodBankList] = useState([]);
-  //const [reportData, setReportData] = useState(null);
   const [errorData, seterrorData] = useState(null);
   //const [officeNames, setOfficeNames] = useState([]); // [officeNames,setOfficeNames]
   // const { unitId, approvedById, scst, financialYear, projectId } = location.state || {};
@@ -39,10 +38,8 @@ const DetailedAAReport  = ({
      setNormalizedApprovedById(adjusted);
    }, [approvedById]);
  
-  // console.log("unitId"+unitId+" approvedById"+approvedById+" scstFunds"+scstFunds+" financialYear"+financialYear+" projectId"+projectId+ "hoaId"+hoaId+"workTypeId"+workTypeId+"ProjSubType"+ProjSubType +"type"+type);
  
 const viewFile = (filePath) => {
- // console.log(filePath);
     ViewFile(filePath);
   };
 

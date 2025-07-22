@@ -3,84 +3,156 @@ import { Card, Alert } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import ReportsService from '../../services/ReportsService';
 import { useState, useEffect } from 'react';
+import { useFormik } from "formik";
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import Col from "react-bootstrap/Col";
 import { FinancialYearOptions } from '../Entry/FinancialYearOptions';
 import Button from 'react-bootstrap/Button';
 import { useNavigate  } from 'react-router-dom'; 
+import UserOfficeDetails from "../Entry/UserOfficeDetails";
+import UserService from '../../services/UserService';
+import AdminSanctionService from '../../services/AdminSanctionService';
+import { useUserDetails } from "../UserDetailsContext";
+import * as yup from "yup";
+
+
 
  const AdminSanctionEdit = () => {
-
-  const [selectedYear, setSelectedYear] = useState(null);
-  const [approvedById, setApprovedById] = useState('');
-  const [reportData, setReportData] = useState();
-  const [errorData, seterrorData] = useState(null); 
-  const [selectedWorkData, setSelectedWorkData] = useState(null);   
-
-
-  const getSelectedYear = (data) => {
-    setSelectedYear(data);
-    setApprovedById('')
-  }
-
+ const { user } = useUserDetails();
   const navigate = useNavigate();
-  const handleEditScreen = (workId) => {
-    //alert("workId :" +workId);
-    // Fetch data from the backend before navigating
-    ReportsService.fetchDataByWorkId({params: {
-      workId: workId,
-    }},
-      (response) => {
-        setSelectedWorkData(response.data); // Store the fetched data
-        navigate('/submitASEdit', { state: { workData: response.data } }); // Pass the data to the next page
-      }, 
-      (error) => {
-        seterrorData("Error fetching work data");
-        console.log(error);
-      }
-    );
-  }
+  const [units, setUnits] = useState([]);
+  const [unitId, setUnitId] = useState("");
+  const [selectedYear, setSelectedYear] = useState("");
+  const [approvedById, setApprovedById] = useState("");
+
+  // 🔁 Child-to-parent values from UserOfficeDetails
+  const [circleId, setCircleId] = useState("");
+  const [divisionId, setDivisionId] = useState("");
+  const [subDivisionId, setSubDivisionId] = useState("");
+  const [reportData, setReportData] = useState([]);
+  const [errorData, setErrorData] = useState(null);
+  const [message, setMessage] = useState("");
+  const [errormsg, setErrormsg] = useState("");
 
 
-  const getApprovedById = (data) => {
-    setApprovedById(data);
-  }
+  const formik = useFormik({
+    initialValues: {
+      workId: "",
+      circleId: "",
+      divisionId: "",
+      subDivisionId: "",
+    },
+    validationSchema: yup.object({
+      workId: yup.string().required("Work is required"),
+      circleId: yup.string().required("Circle is required"),
+      divisionId: yup.string().required("Division is required"),
+      subDivisionId: yup.string().required("Sub Division is required"),
+    }),
+    onSubmit: (values) => {
+      AdminSanctionService.submiAssignedWorks(
+        values,
+        (res) => setMessage(res.data.message),
+        (err) => setErrormsg(err.message),
+      );
+    },
+  });
 
-  const handleSanctionChange=(event)=>{                                                                         
-    setApprovedById(event.target.value)
-  }
 
-  const sanctionAuthorityWise = () => {
-    ReportsService.fetchSanctionAuthorityAndOfficeWise({
-      params: {
-        unitId: 9813,
-        circleId:0,
-        divisionId:0,   
-        subDivisionId:0,
-        financialYear: selectedYear,
-        approvedById: approvedById
-      }
-    }, 
-    (response) => {
-      //console.log(JSON.stringify(response.data.data));
-      setReportData(response.data.data);
-      //console.log(response.data.data);
-      seterrorData(null);
-    }, (error) => {
-      seterrorData("Error fetching data");
-      console.log(error);
-    })
+  const getSelectedValues = (data) => {
+    formik.setValues({
+      ...formik.values,
+      circleId: data.circle,
+      divisionId: data.division,
+      subDivisionId: data.subdivision,
+    });
+    setCircleId(data.circle);
+    setDivisionId(data.division);
+    setSubDivisionId(data.subdivision);
   };
 
 
   useEffect(() => {
-    if (!approvedById) {
-      return;
-    } else {
-      sanctionAuthorityWise();
-    }
-  }, [approvedById])
+    UserService.getUnits(
+      (res) => {
+        setUnits(res.data.data);
+        setErrorData(null);
+      },
+      (err) => {
+        console.error(err);
+        setErrorData("Error fetching units");
+      }
+    );
+  }, []);
 
+  useEffect(() => {
+    if (unitId && approvedById && selectedYear) {
+      ReportsService.fetchSanctionAuthorityAndOfficeWise(
+        {
+          params: {
+            unitId,
+            circleId,
+            divisionId,
+            subDivisionId,
+            financialYear: selectedYear,
+            approvedById,
+          },
+        },
+        (res) => {
+          setReportData(res.data.data);
+          setErrorData(null);
+        },
+        (err) => {
+          console.error(err);
+          setErrorData("Error fetching data");
+        }
+      );
+    }
+  }, [unitId, approvedById, selectedYear, circleId, divisionId, subDivisionId]);
+
+  const handleUnitChange = (e) => {
+    setUnitId(e.target.value);
+    setApprovedById("");
+    setReportData([]);
+  };
+
+  const handleYearChange = (yr) => {
+    setSelectedYear(yr);
+    setApprovedById("");
+    setReportData([]);
+  };
+
+  const handleSanctionChange = (e) => {
+    setApprovedById(e.target.value);
+  };
+
+  const handleEditScreen = (workId) => {
+    ReportsService.fetchDataByWorkId(
+      { params: { workId } },
+      (res) => {
+        navigate("/submitASEdit", { state: { workData: res.data } });
+      },
+      (err) => {
+        console.error(err);
+        setErrorData("Error fetching work data");
+      }
+    );
+  };
+
+  const handleDeleteScreen = (workId) => {
+  const confirmDelete = window.confirm("Are you sure you want to delete this record?");
+  if (!confirmDelete) return;
+     AdminSanctionService.deleteByWorkId(
+     { params: { workId } },
+    (response) => {
+      alert("Deleted successfully");
+    },
+    (error) => {
+      console.error("Delete failed", error);
+      alert("Delete failed. Please try again.");
+    }
+  );
+};
  
   return (
     <div className='d-flex justify-content-center m-3'>
@@ -88,88 +160,79 @@ import { useNavigate  } from 'react-router-dom';
         <Card.Header className='Card-header'>Edit Administrative Sanctions</Card.Header>
         <Card.Body >
 
-          <Card.Text>
+          <Card.Text></Card.Text>
+       <Form>
+        <Row className="mb-3">
+          <Form.Group as={Col} controlId="unitSelect">
+            <Form.Label>Select Unit</Form.Label>
+            <Form.Select value={unitId} onChange={handleUnitChange} required>
+              <option value="">-- Select Unit --</option>
+              {units.map((u) => (<option key={u.unitId} value={u.unitId}> {u.unitName}  </option>  ))}
+            </Form.Select>
+          </Form.Group>
+          <UserOfficeDetails selectedValueFromChild={getSelectedValues} unitId={unitId} />
+        </Row>
 
-            <Row className="mb-3" >
-              <Form.Group as={Row} controlId="formGridFinYear" >
-              <div className="d-flex justify-content-center m-3">
-  {/* Financial Year */}
-  <div className="d-flex align-items-center mx-3">
-    <Form.Label className="mb-0 me-2">Select Financial Year:</Form.Label>
-    <FinancialYearOptions  selectedYearFromChild={getSelectedYear} />
-  </div>
+        <Row className="mb-3 align-items-center">
+          <Form.Group as={Col} controlId="finYear">
+            <Form.Label>Select Financial Year</Form.Label>
+            <FinancialYearOptions  selectedYearFromChild={handleYearChange}/>
+          </Form.Group>
 
-  {/* Sanction Authority */}
-  <div className="d-flex align-items-center mx-3">
-    <Form.Label className="mb-0 me-2">Sanction Authority:</Form.Label>
-    <Form.Control
-      as="select"
-      value={approvedById}
-      id="approvedById"
-      onChange={handleSanctionChange}
-    >
-      <option value="">--Select--</option>
-      <option value="1">Government Sanctions</option>
-      <option value="2">O & M Committee</option>
-      <option value="3">Chief Engineer</option>
-      <option value="4">Superintending Engineer</option>
-      <option value="5">Executive Engineer</option>
-      <option value="6">Deputy Executive Engineer</option>
-    </Form.Control>
-  </div>
-</div>
-              </Form.Group>
-            </Row>
+          <Form.Group as={Col} controlId="approvedBy">
+            <Form.Label>Sanction Authority</Form.Label>
+            <Form.Select value={approvedById} onChange={handleSanctionChange}required >
+              <option value="">-- Select Authority --</option>
+              <option value="1">Government Sanctions</option>
+              <option value="2">O & M Committee</option>
+              <option value="3">Chief Engineer</option>
+              <option value="4">Superintending Engineer</option>
+              <option value="5">Executive Engineer</option>
+              <option value="6">Deputy Executive Engineer</option>
+            </Form.Select>
+          </Form.Group>
+        </Row>
 
+        {errorData && <Alert variant="danger">{errorData}</Alert>}
 
-            {errorData && <Alert variant="danger">{errorData}</Alert>}
-            <Table striped bordered hover size="sm" responsive="sm" className='custom-table'>
-              <thead>
-                <tr >
-                  <th>Sl.No</th>
-                  <th>Work Type</th>
-                  <th>Name of the Work</th>
-                  <th>Proceeding Number</th>
-                  <th>Administrative Amount </th>
-                  <th>Head of account</th>
-                  <th>Sanctioned Authority</th>
-                  {/* <th>Submitted by</th> */}
-                  <th>Financial Year</th>
-                  <th>Update</th>
-                  <th>Delete</th>
+        <Table striped bordered hover size="sm" responsive>
+          <thead>
+            <tr>
+              <th>Sl.No</th>
+              <th>Work Type</th>
+              <th>Name of the Work</th>
+              <th>Proceeding Number</th>
+              <th>Administrative Amount</th>
+              <th>Head of account</th>
+              <th>Sanctioned Authority</th>
+              <th>Financial Year</th>
+              <th>Update</th>
+               <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reportData.length > 0 ? (
+              reportData.map((item, idx) => (
+                <tr key={item.workId || idx}>
+                  <td align="center">{idx + 1}</td>
+                  <td align="center">{item.workTypeName}</td>
+                  <td align="center">{item.workName}</td>
+                  <td align="center">{item.referenceNumber}</td>
+                  <td align="center">{item.adminSanctionAmt}</td>
+                  <td align="center">{item.headOfAccount}</td>
+                  <td align="center">{item.approvedByName}</td>
+                  <td align="center">{item.financialYear}</td>
+                  <td align="center"><Button variant="primary" onClick={() => handleEditScreen(item.workId)}>Update</Button></td>
+                  <td align="center"><Button variant="danger" onClick={() => handleDeleteScreen(item.workId)}>Delete</Button></td>
                 </tr>
-                
-              </thead>
-              <tbody>
-                {
-                  reportData && reportData.map((item, index) => (
-                    <tr key={index}>
-                      <td align="center">{index + 1}</td>
-                      <td align="center">{item.workTypeName}</td>
-                      <td align="center">{item.workName}</td>
-                      <td align="center">{item.referenceNumber}</td>
-                      <td align="center">{item.adminSanctionAmt}</td>
-                      <td align="center">{item.headOfAccount}</td>
-                      <td align="center">{item.approvedByName}</td>
-                      {/* <td align="center">{item.finyear}</td> */}
-                      <td align="center">{item.financialYear}</td>
-                      <td align="center"><Button variant="primary" type="submit" onClick={() => handleEditScreen(item.workId)}>
-                    Update
-                  </Button></td>
-                      <td align="center"><Button variant="danger" type="submit">
-                    Delete
-                  </Button></td>
-                 
-                    </tr>
-                  ))
-                }{
-                  reportData && reportData.length === 0 && <tr><td colSpan="17" align="center">No Data Found</td></tr>
-                }
-              </tbody></Table>
-          </Card.Text>
-        </Card.Body>
-      </Card>
-
+              ))
+            ) : (
+              <tr>
+                <td colSpan={9} align="center">{approvedById && <em>No Data Found</em>} </td></tr> )}
+          </tbody>
+        </Table>
+      </Form>
+</Card.Body></Card>
     </div>
   )
 }

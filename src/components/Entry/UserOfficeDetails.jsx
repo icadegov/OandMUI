@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import UserService from "../../services/UserService";
 import { useUserDetails } from "../UserDetailsContext";
-
+import Row from 'react-bootstrap/Row';
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 
-const UserOfficeDetails = ({ selectedValueFromChild }) => {
+const UserOfficeDetails = ({ selectedValueFromChild ,unitId}) => {
   const { user } = useUserDetails();
   const [circle, setCircle] = useState([]);
 
@@ -20,18 +20,23 @@ const UserOfficeDetails = ({ selectedValueFromChild }) => {
   const [selSubdivision, setSelSubdivision] = useState(0);
 
   useEffect(() => {
-    // UserService.getCirclesByUnitId({ params: { unit: user.unit}},(response)=>setCircle(response.data.data),(error)=>{console.log(error)})
-
+  if (unitId) {
     UserService.getCirclesByUnitId(
-      user.unitId,
+      unitId,
       (response) => {
         setCircle(response);
+        setSelCircle(0); // Reset selected values
+        setdivision([]);
+        setSelDivision(0);
+        setSubdivision([]);
+        setSelSubdivision(0);
       },
       (error) => {
         console.log(error);
-      },
+      }
     );
-  }, []);
+  }
+}, [unitId]);
 
   const handleCircleChange = (event) => {
     setSelCircle(event.target.value);
@@ -62,7 +67,8 @@ const UserOfficeDetails = ({ selectedValueFromChild }) => {
   };
 
   return (
-    <div>
+ 
+      <>
       <Form.Group as={Col} controlId="formGridFinYear">
         <Form.Label>Select Circle</Form.Label>
         {circle && (
@@ -106,7 +112,8 @@ const UserOfficeDetails = ({ selectedValueFromChild }) => {
           </Form.Select>
         )}
       </Form.Group>
-    </div>
+   </>
+   
   );
 };
 

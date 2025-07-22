@@ -1,58 +1,49 @@
-import React from 'react'
-import { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+export const FinancialYearOptions = ({ selectedYearFromChild, selectedYear }) => {
+  const years = [];
+  const [finYear, setfinYear] = useState('');
 
-export const FinancialYearOptions = ({selectedYearFromChild}) => {
+  const currentyear = new Date().getFullYear();
 
-    const years = [];
-
-    const [finYear, setfinYear] = useState();
-
-    const date = new Date()
-    const currentyear = date.getFullYear();
-
-    const handleChange=(event)=>{
-     
-        setfinYear(event.target.value);                                                                           
-        selectedYearFromChild(event.target.value)
+  // ✅ Initialize internal state from selectedYear prop
+  useEffect(() => {
+    if (selectedYear) {
+      setfinYear(selectedYear);
     }
-   
-    for (let year = 2019; year <= currentyear; year++) {
-      years.push({
-        key: `${year + 1}`,
-        value: `${year + 1}`,
-        label: `${year}-${year + 1}`,
-        startDate: new Date(year, 3, 1), // April 1 of start year
-        endDate: new Date(year + 1, 2, 31) // March 31 of the following year
-      });
-    }
+  }, [selectedYear]); // ✅ Runs when prop changes
+
+  const handleChange = (event) => {
+    const value = event.target.value;
+    setfinYear(value);
+    selectedYearFromChild(value);
+  };
+
+  for (let year = 2019; year <= currentyear; year++) {
+    years.push({
+      key: `${year + 1}`,
+      value: `${year + 1}`,
+      label: `${year}-${year + 1}`,
+      startDate: new Date(year, 3, 1),
+      endDate: new Date(year + 1, 2, 31)
+    });
+  }
+
   return (
-<>
-
-{/* <Select 
-        value={finYear}
-        onChange={handleChange}
-        options={years} // Set the financial year options
-        placeholder="Select Financial Year"
-        isClearable
-  /> */}
-
-  <Row className=" d-flex justify-content-center align-items-center" >
-    <Col>
-<Form.Select value={finYear} onChange={handleChange} style={{ width: "100%" }}>
-  <option value="">Select </option>
-  {years.map((year) => (
-    <option key={year.value} value={year.value}>
-      {year.label}
-    </option>
-  ))}
-</Form.Select>
-</Col>
-</Row>
-
-</>
-  )
-}
+    <Row className="d-flex justify-content-center align-items-center">
+      <Col>
+        <Form.Select value={finYear} onChange={handleChange} style={{ width: "100%" }}>
+          <option value="">Select</option>
+          {years.map((year) => (
+            <option key={year.value} value={year.value}>
+              {year.label}
+            </option>
+          ))}
+        </Form.Select>
+      </Col>
+    </Row>
+  );
+};

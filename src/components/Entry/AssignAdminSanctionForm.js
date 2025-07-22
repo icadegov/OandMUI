@@ -125,8 +125,9 @@ function AssignAdminSanction() {
                   </Form.Select>
                   <Form.Control.Feedback type="invalid">{formik.errors.workId}</Form.Control.Feedback>
                 </Form.Group>
+                
 
-                <UserOfficeDetails selectedValueFromChild={getSelectedValues}></UserOfficeDetails>
+                <UserOfficeDetails selectedValueFromChild={getSelectedValues} unitId={user.unitId}></UserOfficeDetails>
                 <Button size="sm" className="m-3 w-25" variant="primary" type="submit">
                   Submit
                 </Button>

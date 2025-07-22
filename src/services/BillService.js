@@ -42,19 +42,7 @@ const BillService = {
             .catch((error) => errorCallback(error));
     },
 
-    // Delete a student
-    deleteBillDetails: (id, token, successCallback, errorCallback) => {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        };
-
-        HttpService.deleteBillDetails(id, config)
-            .then(() => successCallback())
-            .catch((error) => errorCallback(error));
-    },
-
+    
 }
 
 export default BillService

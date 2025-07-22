@@ -2,10 +2,13 @@ import HttpService from "./HttpService";
 
 import Cookies from 'js-cookie';
 import Axios from "axios";
+import UserService from "./UserService";
 
-//const submitURL="http://192.168.1.122:8072/oandm/OandMWorks/submitAdminSanctions";
+const baseURL="http://192.168.1.122:8072/oandm/OandMWorks/";
+//const baseURL = "http://localhost:8098/OandMWorks/";
 
-const submitURL = "http://localhost:8098/OandMWorks/submitAdminSanctions";
+const submitURL = baseURL+"submitAdminSanctions";
+const updateURL = baseURL+"updateAdminSanctions";
 
 
 const AdminSanctionService = {
@@ -47,6 +50,18 @@ let token=Cookies.get('token');
                 .then((response) => successCallback(response))
                 .catch((error) => errorCallback(error));
     },
+
+    updateAdminSanction: async(data, successCallback, errorCallback) => {
+              const config = {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                };
+                await Axios.post(updateURL, data,config)
+                .then((response) => successCallback(response))
+                .catch((error) => errorCallback(error));
+    },
+
     getLifts: (projectId,successCallback, errorCallback) => {
         //HttpService.setAuthToken();
         HttpService.getLifts(projectId)
@@ -91,6 +106,21 @@ getProjectsList: (successCallback, errorCallback) => {
     .then((response) => successCallback(response))
     .catch((error) => errorCallback(error));
 },
+
+getUnitsList : (successCallback, errorCallback) => {
+    HttpService.setAuthToken();
+    UserService.getUnits()
+    .then((response) => successCallback(response))
+    .catch((error) =>errorCallback(error));
+
+},
+
+deleteByWorkId : (workId, successCallback, errorCallback) => {
+            HttpService.deleteByWorkId(workId)
+            .then(() => successCallback())
+            .catch((error) => errorCallback(error));
+    },
+
 }
 
 export default AdminSanctionService
